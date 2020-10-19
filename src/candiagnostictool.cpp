@@ -11,27 +11,21 @@ CanDiagnosticTool::CanDiagnosticTool(QWidget* parent) : QMainWindow(parent) {
   mainLayout = new QGridLayout(central);
   central->setLayout(mainLayout);
 
-  comboBoxAdapter = new QComboBox(central);
-  mainLayout->addWidget(comboBoxAdapter, 0, 0, 1, 2);
-
-  labelStatus = new QLabel(u8"Статус:", central);
-  mainLayout->addWidget(labelStatus, 1, 0);
-
-  labelAdapterStatus = new QLabel(u8"не подключено", central);
-  mainLayout->addWidget(labelAdapterStatus, 1, 1);
+  canBusView = new CanBusView(central);
+  mainLayout->addWidget(canBusView, 0, 0);
 
   labelDeviceId = new QLabel(u8"Устройства не обнаружены", central);
-  mainLayout->addWidget(labelDeviceId, 0, 2);
+  mainLayout->addWidget(labelDeviceId, 0, 1);
 
   labelDeviceVersion = new QLabel("", central);
-  mainLayout->addWidget(labelDeviceVersion, 1, 2);
+  mainLayout->addWidget(labelDeviceVersion, 1, 1);
 
   errorsArea = new QScrollArea(central);
   errorsArea->setMinimumSize(600, 600);
   errorsArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
   errorsArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
   errorsArea->setWidgetResizable(true);
-  mainLayout->addWidget(errorsArea, 2, 2);
+  mainLayout->addWidget(errorsArea, 2, 1);
 
   errorsAreaContents = new QWidget(errorsArea);
   errorsArea->setWidget(errorsAreaContents);

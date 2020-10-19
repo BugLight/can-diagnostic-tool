@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\canbusview.cpp" />
     <ClCompile Include="src\candiagnostictool.cpp" />
     <ClCompile Include="src\deviceerrorview.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -23,6 +24,9 @@
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="src\candiagnostictool.qrc" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="src\canbusview.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{33111148-57E0-457B-B797-B88962783560}</ProjectGuid>
@@ -60,9 +64,19 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
   </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
     <QtInstall>msvc2017_64</QtInstall>
-    <QtModules>core;gui;widgets</QtModules>
+    <QtModules>core;gui;widgets;serialbus</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">

@@ -7,6 +7,8 @@
 #include <QVBoxLayout>
 #include <QtWidgets/QMainWindow>
 
+#include "canbusview.h"
+
 class CanDiagnosticTool : public QMainWindow {
   Q_OBJECT
 
@@ -14,12 +16,10 @@ class CanDiagnosticTool : public QMainWindow {
   CanDiagnosticTool(QWidget* parent = Q_NULLPTR);
 
  private:
-  QComboBox* comboBoxAdapter;
+  CanBusView* canBusView;
   QGridLayout* mainLayout;
-  QLabel* labelAdapterStatus;
   QLabel* labelDeviceId;
   QLabel* labelDeviceVersion;
-  QLabel* labelStatus;
   QScrollArea* errorsArea;
   QVBoxLayout* errorsAreaLayout;
   QWidget* errorsAreaContents;
