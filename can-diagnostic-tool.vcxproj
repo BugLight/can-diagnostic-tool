@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\diagnosticprotocol.cpp" />
     <ClCompile Include="src\canbusview.cpp" />
     <ClCompile Include="src\candiagnostictool.cpp" />
     <ClCompile Include="src\deviceerrorview.cpp" />
@@ -27,6 +28,11 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="src\canbusview.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\diagnosticprotocol.h" />
+    <ClInclude Include="src\deviceerror.h" />
+    <ClInclude Include="src\deviceinfo.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{33111148-57E0-457B-B797-B88962783560}</ProjectGuid>
