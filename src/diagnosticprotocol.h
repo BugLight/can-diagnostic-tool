@@ -29,7 +29,7 @@ class DiagnosticProtocolOptions {
 
   int GetMaxRetries() const noexcept { return maxRetries_; }
 
-  void SetMaxRetries(int maxRetries) { maxRetries_ = maxRetries; }
+  void SetMaxRetries(int maxRetries) noexcept { maxRetries_ = maxRetries; }
 
  private:
   std::uint32_t requestCanId_;
@@ -38,7 +38,7 @@ class DiagnosticProtocolOptions {
   int maxRetries_;
 };
 
-enum DiagnosticRequestCode {
+enum DiagnosticRequestCode : quint8 {
   BeginDiagnostics = 0x0,
   EndDiagnostics = 0x1,
   Info = 0x2,
@@ -51,9 +51,10 @@ enum DiagnosticRequestCode {
 
 class DiagnosticProtocolException : public std::exception {
  public:
-  DiagnosticProtocolException() : std::exception() {}
+  DiagnosticProtocolException() noexcept : std::exception() {}
 
-  explicit DiagnosticProtocolException(const char* msg) : std::exception(msg) {}
+  explicit DiagnosticProtocolException(const char* msg) noexcept
+      : std::exception(msg) {}
 };
 
 class DiagnosticProtocol {
@@ -61,6 +62,8 @@ class DiagnosticProtocol {
   DiagnosticProtocol(std::shared_ptr<QCanBusDevice> canBusDevicePtr,
                      const DiagnosticProtocolOptions& options,
                      const QList<DeviceError>& errors) noexcept;
+
+  DiagnosticProtocol() noexcept {}
 
   DeviceInfo RequestDeviceInfo() const;
 
@@ -71,20 +74,26 @@ class DiagnosticProtocol {
   void SetCanBusDevice(
       std::shared_ptr<QCanBusDevice> canBusDevicePtr) noexcept {
     canBusDevicePtr_ = canBusDevicePtr;
+    SetCanFilter();
   }
 
   void SetOptions(const DiagnosticProtocolOptions& options) noexcept {
     options_ = options;
+    SetCanFilter();
   }
 
-  void SetErrors(const QList<DeviceError>& errors) noexcept {
+  void SetErrorsList(const QList<DeviceError>& errors) noexcept {
     errors_ = errors;
   }
 
  private:
+  void SetCanFilter();
+
   QByteArray SendRequest(DiagnosticRequestCode code) const;
 
-  std::shared_ptr<QCanBusDevice> canBusDevicePtr_;
-  DiagnosticProtocolOptions options_;
-  QList<DeviceError> errors_;
+  QList<DeviceError> ErrorsWordToList(quint32 errorsWord) const;
+
+  std::shared_ptr<QCanBusDevice> canBusDevicePtr_ = nullptr;
+  DiagnosticProtocolOptions options_{};
+  QList<DeviceError> errors_{};
 };
