@@ -2,7 +2,6 @@
 
 #include <QCanBus>
 #include <QList>
-
 #include <exception>
 #include <memory>
 
@@ -11,15 +10,15 @@
 
 class DiagnosticProtocolOptions {
  public:
-  std::uint32_t GetRequestCanId() const noexcept { return requestCanId_; }
+  quint32 GetRequestCanId() const noexcept { return requestCanId_; }
 
-  void SetRequestCanId(std::uint32_t requestCanId) noexcept {
+  void SetRequestCanId(quint32 requestCanId) noexcept {
     requestCanId_ = requestCanId;
   }
 
-  std::uint32_t GetResponseCanId() const noexcept { return responseCanId_; }
+  quint32 GetResponseCanId() const noexcept { return responseCanId_; }
 
-  void SetResponseCanId(std::uint32_t responseCanId) noexcept {
+  void SetResponseCanId(quint32 responseCanId) noexcept {
     responseCanId_ = responseCanId;
   }
 
@@ -32,8 +31,8 @@ class DiagnosticProtocolOptions {
   void SetMaxRetries(int maxRetries) noexcept { maxRetries_ = maxRetries; }
 
  private:
-  std::uint32_t requestCanId_;
-  std::uint32_t responseCanId_;
+  quint32 requestCanId_;
+  quint32 responseCanId_;
   int timeout_;
   int maxRetries_;
 };
@@ -71,13 +70,12 @@ class DiagnosticProtocol {
 
   void ResetErrors() const;
 
-  void SetCanBusDevice(
-      std::shared_ptr<QCanBusDevice> canBusDevicePtr) noexcept {
+  void SetCanBusDevice(std::shared_ptr<QCanBusDevice> canBusDevicePtr) {
     canBusDevicePtr_ = canBusDevicePtr;
     SetCanFilter();
   }
 
-  void SetOptions(const DiagnosticProtocolOptions& options) noexcept {
+  void SetOptions(const DiagnosticProtocolOptions& options) {
     options_ = options;
     SetCanFilter();
   }

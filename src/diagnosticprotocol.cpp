@@ -10,15 +10,15 @@ DiagnosticProtocol::DiagnosticProtocol(
 
 void DiagnosticProtocol::SetCanFilter() {
   if (!canBusDevicePtr_) return;
-  // Установка фильтра по идентификатору сообщений протокола
+  QList<QCanBusDevice::Filter> filterList;
   QCanBusDevice::Filter filter;
   filter.frameId = options_.GetResponseCanId();
-  filter.frameIdMask = 0x7fffffff;
-  filter.format = QCanBusDevice::Filter::MatchBaseFormat;
+  filter.frameIdMask = 0x1fffffffu;
+  filter.format = QCanBusDevice::Filter::MatchBaseAndExtendedFormat;
   filter.type = QCanBusFrame::DataFrame;
-  canBusDevicePtr_->setConfigurationParameter(
-      QCanBusDevice::RawFilterKey,
-      QVariant::fromValue(QList<QCanBusDevice::Filter>{filter}));
+  filterList.append(filter);
+  canBusDevicePtr_->setConfigurationParameter(QCanBusDevice::RawFilterKey,
+                                              QVariant::fromValue(filterList));
 }
 
 QByteArray DiagnosticProtocol::SendRequest(DiagnosticRequestCode code) const {
@@ -34,8 +34,11 @@ QByteArray DiagnosticProtocol::SendRequest(DiagnosticRequestCode code) const {
         QCanBusFrame(options_.GetRequestCanId(), QByteArray(1, currentCode)));
     if (!canBusDevicePtr_->waitForFramesReceived(options_.GetTimeout())) break;
     while (canBusDevicePtr_->framesAvailable() > 0) {
-      auto payload = canBusDevicePtr_->readFrame().payload();
-      if (payload.startsWith(currentCode)) return payload.remove(0, 1);
+      auto frame = canBusDevicePtr_->readFrame();
+      if (frame.frameId() == options_.GetResponseCanId()) {
+        auto payload = frame.payload();
+        if (payload.startsWith(currentCode)) return payload.remove(0, 1);
+      }
     }
     ++retries;
   } while (retries <= options_.GetMaxRetries());

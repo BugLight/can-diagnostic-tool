@@ -43,12 +43,20 @@ OptionsDialog::OptionsDialog(QWidget* parent) : QDialog(parent) {
   connect(buttonOk, &QPushButton::clicked, this, &OptionsDialog::accept);
 }
 
+void OptionsDialog::SetOptions(
+    const DiagnosticProtocolOptions& options) noexcept {
+  options_ = options;
+  editRequestId->setText(QString::number(options_.GetRequestCanId(), 16));
+  editResponseId->setText(QString::number(options_.GetResponseCanId(), 16));
+  spinTimeout->setValue(options_.GetTimeout());
+  spinMaxRetries->setValue(options_.GetMaxRetries());
+}
+
 void OptionsDialog::accept() {
-  DiagnosticProtocolOptions options;
-  options.SetRequestCanId(editRequestId->text().toUInt());
-  options.SetResponseCanId(editResponseId->text().toUInt());
-  options.SetTimeout(spinTimeout->value());
-  options.SetMaxRetries(spinMaxRetries->value());
-  emit OptionsConfigured(options);
+  options_.SetRequestCanId(editRequestId->text().toUInt(nullptr, 16));
+  options_.SetResponseCanId(editResponseId->text().toUInt(nullptr, 16));
+  options_.SetTimeout(spinTimeout->value());
+  options_.SetMaxRetries(spinMaxRetries->value());
+  emit OptionsConfigured(options_);
   QDialog::accept();
 }

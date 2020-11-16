@@ -8,6 +8,7 @@
 #include <QWidget>
 
 #include <canbusview.h>
+#include <diagnosticprotocol.h>
 #include <diagnosticview.h>
 
 class CanDiagnosticTool : public QMainWindow {
@@ -20,6 +21,7 @@ class CanDiagnosticTool : public QMainWindow {
   void ExecOptionsDialog();
 
  private:
+  DiagnosticProtocolOptions options;
   QAction* readAction;
   QAction* resetAction;
   QAction* searchAction;

@@ -35,7 +35,13 @@ CanDiagnosticTool::CanDiagnosticTool(QWidget* parent) : QMainWindow(parent) {
   canBusView = new CanBusView(leftColumn);
   leftColumnLayout->addWidget(canBusView);
 
+  options.SetRequestCanId(0);
+  options.SetResponseCanId(1);
+  options.SetTimeout(1000);
+  options.SetMaxRetries(5);
+
   diagnosticView = new DiagnosticView(central);
+  diagnosticView->SetProtocolOptions(options);
   mainLayout->addWidget(diagnosticView, 0, 1);
 
   connect(canBusView, &CanBusView::BusConnected, diagnosticView,
@@ -52,7 +58,9 @@ CanDiagnosticTool::CanDiagnosticTool(QWidget* parent) : QMainWindow(parent) {
 
 void CanDiagnosticTool::ExecOptionsDialog() {
   OptionsDialog dialog(this);
+  dialog.SetOptions(options);
   connect(&dialog, &OptionsDialog::OptionsConfigured, diagnosticView,
           &DiagnosticView::SetProtocolOptions);
   dialog.exec();
+  options = dialog.GetOptions();
 }

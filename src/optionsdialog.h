@@ -16,12 +16,17 @@ class OptionsDialog : public QDialog {
  public:
   OptionsDialog(QWidget *parent = Q_NULLPTR);
 
+  void SetOptions(const DiagnosticProtocolOptions& options) noexcept;
+
+  DiagnosticProtocolOptions GetOptions() const noexcept { return options_; }
+
   void accept() override;
 
  signals:
   void OptionsConfigured(const DiagnosticProtocolOptions&);
 
  private:
+  DiagnosticProtocolOptions options_;
   HexValidator* hexValidator;
   QFormLayout* formLayout;
   QLineEdit* editRequestId;

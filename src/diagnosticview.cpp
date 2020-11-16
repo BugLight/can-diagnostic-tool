@@ -32,12 +32,6 @@ DiagnosticView::DiagnosticView(QWidget* parent) : QWidget(parent) {
   errorsAreaLayout->setAlignment(Qt::Alignment(Qt::AlignTop));
   errorsAreaContents->setLayout(errorsAreaLayout);
 
-  DiagnosticProtocolOptions options;
-  options.SetRequestCanId(0x0);
-  options.SetResponseCanId(0x1);
-  options.SetMaxRetries(5);
-  options.SetTimeout(1000);
-  protocol.SetOptions(options);
   protocol.SetErrorsList(JsonErrorsReader().ReadErrorsList(QStringLiteral("device_errors.json")));
 }
 
@@ -50,8 +44,6 @@ void DiagnosticView::SetCanBusDevice(
 
 void DiagnosticView::SetProtocolOptions(const DiagnosticProtocolOptions& options) {
   protocol.SetOptions(options);
-  SearchDevice();
-  ReadErrors();
 }
 
 void DiagnosticView::SearchDevice() {
@@ -68,8 +60,8 @@ void DiagnosticView::SearchDevice() {
 
 void DiagnosticView::ReadErrors() {
   try {
-    auto errors = protocol.ReadErrors();
     ClearErrorsArea();
+    auto errors = protocol.ReadErrors();
     for (const auto& error : errors) {
       errorsAreaLayout->addWidget(
           new DeviceErrorView(error, errorsAreaContents));
