@@ -44,6 +44,14 @@
       <FileType>Document</FileType>
     </CopyFileToFolders>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="LICENSE">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="README.md">
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{33111148-57E0-457B-B797-B88962783560}</ProjectGuid>
     <Keyword>QtVS_v303</Keyword>
