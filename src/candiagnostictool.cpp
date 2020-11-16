@@ -1,8 +1,9 @@
 ﻿#include "candiagnostictool.h"
 
-#include <QMenuBar>
-
 #include <deviceerrorview.h>
+#include <optionsdialog.h>
+
+#include <QMenuBar>
 
 CanDiagnosticTool::CanDiagnosticTool(QWidget* parent) : QMainWindow(parent) {
   setFont(QFont("Arial", 12));
@@ -11,8 +12,10 @@ CanDiagnosticTool::CanDiagnosticTool(QWidget* parent) : QMainWindow(parent) {
   searchAction = new QAction(u8"Обнаружить устройство", this);
   readAction = new QAction(u8"Прочитать ошибки", this);
   resetAction = new QAction(u8"Очистить ошибки", this);
+  optionsAction = new QAction(u8"Настройки", this);
 
   fileMenu = menuBar()->addMenu(u8"Файл");
+  fileMenu->addAction(optionsAction);
 
   diagnosticMenu = menuBar()->addMenu(u8"Диагностика");
   diagnosticMenu->addAction(searchAction);
@@ -43,4 +46,13 @@ CanDiagnosticTool::CanDiagnosticTool(QWidget* parent) : QMainWindow(parent) {
           &DiagnosticView::ReadErrors);
   connect(resetAction, &QAction::triggered, diagnosticView,
           &DiagnosticView::ResetErrors);
+  connect(optionsAction, &QAction::triggered, this,
+          &CanDiagnosticTool::ExecOptionsDialog);
+}
+
+void CanDiagnosticTool::ExecOptionsDialog() {
+  OptionsDialog dialog(this);
+  connect(&dialog, &OptionsDialog::OptionsConfigured, diagnosticView,
+          &DiagnosticView::SetProtocolOptions);
+  dialog.exec();
 }

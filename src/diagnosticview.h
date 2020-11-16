@@ -20,6 +20,8 @@ class DiagnosticView : public QWidget {
  public slots:
   void SetCanBusDevice(std::shared_ptr<QCanBusDevice>);
 
+  void SetProtocolOptions(const DiagnosticProtocolOptions&);
+
   void SearchDevice();
 
   void ReadErrors();

@@ -48,6 +48,12 @@ void DiagnosticView::SetCanBusDevice(
   ReadErrors();
 }
 
+void DiagnosticView::SetProtocolOptions(const DiagnosticProtocolOptions& options) {
+  protocol.SetOptions(options);
+  SearchDevice();
+  ReadErrors();
+}
+
 void DiagnosticView::SearchDevice() {
   try {
     auto info = protocol.RequestDeviceInfo();

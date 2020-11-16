@@ -16,10 +16,14 @@ class CanDiagnosticTool : public QMainWindow {
  public:
   CanDiagnosticTool(QWidget* parent = Q_NULLPTR);
 
+ private slots:
+  void ExecOptionsDialog();
+
  private:
   QAction* readAction;
   QAction* resetAction;
   QAction* searchAction;
+  QAction* optionsAction;
   CanBusView* canBusView;
   DiagnosticView* diagnosticView;
   QGridLayout* mainLayout;
