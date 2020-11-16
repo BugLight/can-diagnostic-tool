@@ -1,7 +1,8 @@
 #pragma once
 
+#include <QAction>
 #include <QGridLayout>
-#include <QPushButton>
+#include <QMenu>
 #include <QVBoxLayout>
 #include <QtWidgets/QMainWindow>
 #include <QWidget>
@@ -16,12 +17,14 @@ class CanDiagnosticTool : public QMainWindow {
   CanDiagnosticTool(QWidget* parent = Q_NULLPTR);
 
  private:
+  QAction* readAction;
+  QAction* resetAction;
+  QAction* searchAction;
   CanBusView* canBusView;
   DiagnosticView* diagnosticView;
   QGridLayout* mainLayout;
-  QPushButton* buttonRead;
-  QPushButton* buttonReset;
-  QPushButton* buttonSearch;
+  QMenu* fileMenu;
+  QMenu* diagnosticMenu;
   QVBoxLayout* leftColumnLayout;
   QWidget* central;
   QWidget* leftColumn;
