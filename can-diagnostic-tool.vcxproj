@@ -11,10 +11,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\jsonerrorsreader.cpp" />
     <ClCompile Include="src\diagnosticprotocol.cpp" />
     <ClCompile Include="src\canbusview.cpp" />
     <ClCompile Include="src\candiagnostictool.cpp" />
     <ClCompile Include="src\deviceerrorview.cpp" />
+    <ClCompile Include="src\diagnosticview.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -30,9 +32,17 @@
     <QtMoc Include="src\canbusview.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\jsonerrorsreader.h" />
     <ClInclude Include="src\diagnosticprotocol.h" />
     <ClInclude Include="src\deviceerror.h" />
     <ClInclude Include="src\deviceinfo.h" />
+    <QtMoc Include="src\diagnosticview.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="device_errors.json">
+      <DeploymentContent>true</DeploymentContent>
+      <FileType>Document</FileType>
+    </CopyFileToFolders>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{33111148-57E0-457B-B797-B88962783560}</ProjectGuid>

@@ -2,7 +2,7 @@
 
 CanBusView::CanBusView(QWidget* parent) : QWidget(parent) {
   layout = new QGridLayout(this);
-  setLayout(layout);
+  layout->setAlignment(Qt::Alignment(Qt::AlignTop));
 
   auto plugins = QCanBus::instance()->plugins();
 

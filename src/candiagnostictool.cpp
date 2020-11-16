@@ -8,31 +8,35 @@ CanDiagnosticTool::CanDiagnosticTool(QWidget* parent) : QMainWindow(parent) {
 
   central = new QWidget(this);
   setCentralWidget(central);
+
   mainLayout = new QGridLayout(central);
-  central->setLayout(mainLayout);
 
-  canBusView = new CanBusView(central);
-  mainLayout->addWidget(canBusView, 0, 0);
+  leftColumn = new QWidget(central);
+  mainLayout->addWidget(leftColumn, 0, 0);
 
-  labelDeviceId = new QLabel(u8"Устройства не обнаружены", central);
-  mainLayout->addWidget(labelDeviceId, 0, 1);
+  leftColumnLayout = new QVBoxLayout(leftColumn);
 
-  labelDeviceVersion = new QLabel("", central);
-  mainLayout->addWidget(labelDeviceVersion, 1, 1);
+  canBusView = new CanBusView(leftColumn);
+  leftColumnLayout->addWidget(canBusView);
 
-  errorsArea = new QScrollArea(central);
-  errorsArea->setMinimumSize(600, 600);
-  errorsArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-  errorsArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-  errorsArea->setWidgetResizable(true);
-  mainLayout->addWidget(errorsArea, 2, 1);
+  buttonSearch = new QPushButton(u8"Обнаружить устройство", leftColumn);
+  leftColumnLayout->addWidget(buttonSearch);
 
-  errorsAreaContents = new QWidget(errorsArea);
-  errorsArea->setWidget(errorsAreaContents);
+  buttonRead = new QPushButton(u8"Прочитать ошибки", leftColumn);
+  leftColumnLayout->addWidget(buttonRead);
 
-  errorsAreaLayout = new QVBoxLayout(errorsAreaContents);
-  errorsAreaContents->setLayout(errorsAreaLayout);
+  buttonReset = new QPushButton(u8"Очистить ошибки", leftColumn);
+  leftColumnLayout->addWidget(buttonReset);
 
-  auto error = new DeviceErrorView(errorsAreaContents);
-  errorsAreaLayout->addWidget(error);
+  diagnosticView = new DiagnosticView(central);
+  mainLayout->addWidget(diagnosticView, 0, 1);
+
+  connect(canBusView, &CanBusView::BusConnected, diagnosticView,
+          &DiagnosticView::SetCanBusDevice);
+  connect(buttonSearch, &QPushButton::clicked, diagnosticView,
+          &DiagnosticView::SearchDevice);
+  connect(buttonRead, &QPushButton::clicked, diagnosticView,
+          &DiagnosticView::ReadErrors);
+  connect(buttonReset, &QPushButton::clicked, diagnosticView,
+          &DiagnosticView::ResetErrors);
 }

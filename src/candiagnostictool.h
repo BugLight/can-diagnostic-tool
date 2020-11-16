@@ -1,13 +1,13 @@
 #pragma once
 
-#include <QComboBox>
 #include <QGridLayout>
-#include <QLabel>
-#include <QScrollArea>
+#include <QPushButton>
 #include <QVBoxLayout>
 #include <QtWidgets/QMainWindow>
+#include <QWidget>
 
-#include "canbusview.h"
+#include <canbusview.h>
+#include <diagnosticview.h>
 
 class CanDiagnosticTool : public QMainWindow {
   Q_OBJECT
@@ -17,11 +17,12 @@ class CanDiagnosticTool : public QMainWindow {
 
  private:
   CanBusView* canBusView;
+  DiagnosticView* diagnosticView;
   QGridLayout* mainLayout;
-  QLabel* labelDeviceId;
-  QLabel* labelDeviceVersion;
-  QScrollArea* errorsArea;
-  QVBoxLayout* errorsAreaLayout;
-  QWidget* errorsAreaContents;
+  QPushButton* buttonRead;
+  QPushButton* buttonReset;
+  QPushButton* buttonSearch;
+  QVBoxLayout* leftColumnLayout;
   QWidget* central;
+  QWidget* leftColumn;
 };

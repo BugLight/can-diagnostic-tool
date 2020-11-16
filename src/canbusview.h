@@ -15,10 +15,10 @@ class CanBusView : public QWidget {
  public:
   CanBusView(QWidget* parent = Q_NULLPTR);
 
-  std::weak_ptr<QCanBusDevice> GetCanBusDevice() const noexcept { return canBusDevice; }
+  std::shared_ptr<QCanBusDevice> GetCanBusDevice() const noexcept { return canBusDevice; }
 
  signals:
-  void BusConnected(std::weak_ptr<QCanBusDevice>);
+  void BusConnected(std::shared_ptr<QCanBusDevice>);
 
  private slots:
   void RefreshDevicesList();
