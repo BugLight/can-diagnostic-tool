@@ -106,6 +106,7 @@
     <QtInstall>msvc2017_64</QtInstall>
     <QtModules>core;gui;widgets;serialbus</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
+    <QtQMLDebugEnable>true</QtQMLDebugEnable>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
     <QtInstall>msvc2017_64</QtInstall>

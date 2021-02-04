@@ -20,12 +20,25 @@ CanBusView::CanBusView(QWidget* parent) : QWidget(parent) {
           &CanBusView::RefreshDevicesList);
   layout->addWidget(buttonRefresh, 1, 1);
 
+  buttonConnect = new QPushButton(u8"Подключить", this);
+  connect(buttonConnect, &QPushButton::clicked, this, &CanBusView::Connect);
+  layout->addWidget(buttonConnect, 2, 0, 1, 2);
+
   labelStatus = new QLabel(this);
   labelStatus->setFixedWidth(240);
   labelStatus->setWordWrap(true);
-  layout->addWidget(labelStatus, 2, 0);
+  layout->addWidget(labelStatus, 3, 0);
 
   RefreshDevicesList();
+}
+
+void CanBusView::Connect() {
+  if (canBusDevice->state() == QCanBusDevice::UnconnectedState) {
+    if (!canBusDevice->connectDevice())
+      labelStatus->setText(u8"Ошибка подключения");
+  } else if (canBusDevice->state() == QCanBusDevice::ConnectedState) {
+    canBusDevice->disconnectDevice();
+  }
 }
 
 void CanBusView::RefreshDevicesList() {
@@ -42,6 +55,7 @@ void CanBusView::RefreshDevicesList() {
 }
 
 void CanBusView::ChangeCurrentDevice(int index) {
+  if (canBusDevice) canBusDevice->disconnectDevice();
   if (index < 0) {
     canBusDevice.reset();
   } else {
@@ -54,8 +68,8 @@ void CanBusView::ChangeCurrentDevice(int index) {
     if (canBusDevice) {
       connect(canBusDevice.get(), &QCanBusDevice::stateChanged, this,
               &CanBusView::SetStatus);
-      if (!canBusDevice->connectDevice())
-        labelStatus->setText(u8"Ошибка подключения");
+      canBusDevice->setConfigurationParameter(QCanBusDevice::BitRateKey,
+                                              250000);
     } else {
       labelStatus->setText(u8"Ошибка: " + errorMsg);
     }
@@ -66,19 +80,25 @@ void CanBusView::SetStatus(QCanBusDevice::CanBusDeviceState state) {
   switch (state) {
     case QCanBusDevice::UnconnectedState: {
       labelStatus->setText(u8"Не подключено");
+      buttonConnect->setText(u8"Подключить");
+      buttonConnect->setDisabled(false);
       break;
     }
     case QCanBusDevice::ConnectingState: {
       labelStatus->setText(u8"Подключение...");
+      buttonConnect->setDisabled(true);
       break;
     }
     case QCanBusDevice::ConnectedState: {
       labelStatus->setText(u8"Подключено");
+      buttonConnect->setText(u8"Отключить");
+      buttonConnect->setDisabled(false);
       emit BusConnected(canBusDevice);
       break;
     }
     case QCanBusDevice::ClosingState: {
       labelStatus->setText(u8"Отключение...");
+      buttonConnect->setDisabled(true);
       break;
     }
   }

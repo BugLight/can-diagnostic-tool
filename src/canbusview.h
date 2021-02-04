@@ -21,6 +21,8 @@ class CanBusView : public QWidget {
   void BusConnected(std::shared_ptr<QCanBusDevice>);
 
  private slots:
+  void Connect();
+
   void RefreshDevicesList();
 
   void ChangeCurrentDevice(int index);
@@ -33,6 +35,7 @@ class CanBusView : public QWidget {
   QLabel* labelStatus;
   QLabel* labelTitle;
   QPushButton* buttonRefresh;
+  QPushButton* buttonConnect;
 
   std::shared_ptr<QCanBusDevice> canBusDevice;
 };

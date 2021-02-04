@@ -35,8 +35,8 @@ CanDiagnosticTool::CanDiagnosticTool(QWidget* parent) : QMainWindow(parent) {
   canBusView = new CanBusView(leftColumn);
   leftColumnLayout->addWidget(canBusView);
 
-  options.SetRequestCanId(0);
-  options.SetResponseCanId(1);
+  options.SetRequestCanId(0x18ea19fd);
+  options.SetResponseCanId(0x18ff0219);
   options.SetTimeout(1000);
   options.SetMaxRetries(5);
 
